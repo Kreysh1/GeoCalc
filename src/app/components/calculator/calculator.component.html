@@ -29,20 +29,58 @@
     <textarea style="width: 600px; height: 100px;" matInput></textarea>
 </mat-form-field> -->
 
+<div class="row" style="background-color: black;">
+    <mat-form-field>
+        <mat-select [(ngModel)]="selectedItem" placeholder="Tipo de Conversión" [(value)]="selected" (selectionChange)="onSelected(selectedItem);">
+          <mat-option *ngFor="let conversion of conversiones" [value]="conversion.value">
+            {{ conversion.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div>
+
 <div class="row">
-    <div class="col">
+    <div class="col" *ngIf="UI1 || UI2">
         <label for="latitud">Latitud</label>
         <input [(ngModel)]="Latitud" type="text" placeholder="g m s.sss" class="form-control">
     </div>
-    <div class="col">
+    <div class="col" *ngIf="UI1 || UI2">
         <label for="latitud">Longitud</label>
         <input [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
     </div>
-    <div class="col">
-        <label for="meridiano">Meridiano Central</label>
+    <div class="col" *ngIf="UI3 || UI4 || UI5 || UI6 || UI7 || UI8">
+        <label for="norte">Norte</label>
+        <input [(ngModel)]="Norte" type="text" placeholder="g m s.sss" class="form-control">
+    </div>
+    <div class="col" *ngIf="UI3 || UI4 || UI4 || UI5 || UI6 || UI7 || UI8">
+        <label for="este">Este</label>
+        <input [(ngModel)]="Este" type="text" placeholder="g m s.sss" class="form-control">
+    </div>
+    <div class="col" *ngIf="UI6 || UI7 || UI8">
+        <label for="zona">Zona</label>
+        <input [(ngModel)]="Zona" type="number" placeholder="" min="11" max="16" class="form-control">
+    </div>
+    <div class="col" *ngIf="UI8">
+        <label for="zona2">Zona Final</label>
+        <input [(ngModel)]="ZonaFinal" type="number" placeholder="" min="11" max="16" class="form-control">
+    </div>
+    <div class="col" *ngIf="UI3 || UI4 || UI5">
+        <label for="meridiano1">Meridiano Central</label>
         <input [(ngModel)]="Meridiano" type="text" placeholder="ggg mm" class="form-control">
     </div>
-    <button mat-raised-button (click)="Geo2TME(Latitud,Longitud,Meridiano);">Calcular</button>
+    <div class="col" *ngIf="UI2 || UI5 || UI7">
+        <label for="meridiano2">Meridiano Central Final</label>
+        <input [(ngModel)]="MeridianoFinal" type="text" placeholder="ggg mm" class="form-control">
+    </div>
+    
+    <button *ngIf="UI1" mat-raised-button (click)="Geo2UTM(Latitud,Longitud);">Calcular</button>
+    <button *ngIf="UI2" mat-raised-button (click)="Geo2TME(Latitud,Longitud,Meridiano);">Calcular</button>
+    <button *ngIf="UI3" mat-raised-button (click)="TME2Geo();">Calcular</button>
+    <button *ngIf="UI4" mat-raised-button (click)="TME2UTM();">Calcular</button>
+    <button *ngIf="UI5" mat-raised-button (click)="TME2TME();">Calcular</button>
+    <button *ngIf="UI6" mat-raised-button (click)="UTM2Geo(Norte,Este,Zona);">Calcular</button>
+    <button *ngIf="UI7" mat-raised-button (click)="UTM2TME();">Calcular</button>
+    <button *ngIf="UI8" mat-raised-button (click)="Zone2Zone();">Calcular</button>
 
     <textarea name="resultados" id="resultados" cols="30" rows="10"></textarea>
 </div>

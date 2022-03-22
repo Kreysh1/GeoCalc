@@ -9,12 +9,102 @@ export class CalculatorComponent implements OnInit {
 
   constructor() { }
 
+  //UI DEFINITION
+  UI1:boolean;
+  UI2:boolean;
+  UI3:boolean;
+  UI4:boolean;
+  UI5:boolean;
+  UI6:boolean;
+  UI7:boolean;
+  UI8:boolean;
+
+  //CONTROL DEL SELECT (combobox)
+  selected:string;
+  selectedItem:string;
+
+  onSelected(value:string){
+
+    //TRANSFORMACION # 1
+    if(value == "Geo2UTM"){
+      this.UI1 = true;
+    }
+    else{
+      this.UI1 = false;
+    }
+    //TRANSFORMACION # 2
+    if(value == "Geo2TME"){
+      this.UI2 = true;
+    }
+    else{
+      this.UI2 = false;
+    }
+    //TRANSFORMACION # 3
+    if(value == "TME2Geo"){
+      this.UI3 = true;
+    }
+    else{
+      this.UI3 = false;
+    }
+    //TRANSFORMACION # 4
+    if(value == "TME2UTM"){
+      this.UI4 = true;
+    }
+    else{
+      this.UI4 = false;
+    }
+    //TRANSFORMACION # 5
+    if(value == "TME2TME"){
+      this.UI5 = true;
+    }
+    else{
+      this.UI5 = false;
+    }
+    //TRANSFORMACION # 6
+    if(value == "UTM2Geo"){
+      this.UI6 = true;
+    }
+    else{
+      this.UI6 = false;
+    }
+    //TRANSFORMACION # 7
+    if(value == "UTM2TME"){
+      this.UI7 = true;
+    }
+    else{
+      this.UI7 = false;
+    }
+    //TRANSFORMACION # 8
+    if(value == "UTMZones"){
+      this.UI8 = true;
+    }
+    else{
+      this.UI8 = false;
+    }
+
+    // {value: 'Geo2UTM', viewValue: 'Geodésicas a UTM'},
+    // {value: 'Geo2TME', viewValue: 'Geodésicas a TME'},
+    // {value: 'TME2Geo', viewValue: 'TME a Geodésicas'},
+    // {value: 'TME2UTM', viewValue: 'TME a UTM'},
+    // {value: 'TME2TME', viewValue: 'TME a TME'},
+    // {value: 'UTM2Geo', viewValue: 'UTM a Geodésicas'},
+    // {value: 'UTM2TME', viewValue: 'UTM a TME'},
+    // {value: 'UTMZones', viewValue: 'Cambio de zonas UTM'},
+  } 
+
+  //GEODESICAS A UTM
   // Latitud:string = "23 15 34.7562";
   // Longitud:string = "111 12 32.6231";
 
+  //VARIABLES DE ENTRADA
   Latitud:string = "25 41 20.1207898782595";
   Longitud:string = "108 29 45.970220635063";
   Meridiano:string = "105 49 0";
+  MeridianoFinal:string = "105 49 0";
+  Norte:string;
+  Este:string
+  Zona:number = 12;
+  ZonaFinal:number = 12;
 
   LatitudG:number;
   LatitudM:number;
@@ -27,6 +117,44 @@ export class CalculatorComponent implements OnInit {
   MeridianoG:number;
   MeridianoM:number;
   MeridianoS:number;
+
+  TME2Geo(){
+    
+  }
+
+  TME2UTM(){
+
+  }
+
+  TME2TME(){
+
+  }
+
+  UTM2Geo(Norte:string,Este:string,Zona:number){
+    //DATUM
+    let a:number = 6378137;
+    let b:number = 6356752.3141;
+    let c:number = (Math.pow(a, 2)/b);
+    let e:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(a, 2));                    //e2
+    let ee:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(b, 2));;                  //e'2
+    let f:number = ((a-b)/a);                                                           //Achatamiento del Elipsoide de Referencia
+    let n:number = ((a-b)/(a+b));
+
+    //CALCULAR DISTANCIA MERIDIONAL (Se calcula en base al DATUM)
+    let A0:number = 0.994977106051944;
+    let A1:number = 0.005001851767455;
+    let A2:number = 0.004184862497658;
+    let A4:number = 0.000021791815429;
+    let A6:number = 0.000000123060249;
+    let A8:number = 0.000000000744632;
+
+
+  }
+
+  UTM2TME(){
+
+  }
+
 
   Geo2TME(Latitud:string,Longitud:string,Meridiano:string){
     //DATUM
@@ -206,7 +334,25 @@ export class CalculatorComponent implements OnInit {
     // console.log(`NORTE:${UTM_Norte}  ESTE:${UTM_Este}`);
   }
 
-  ngOnInit(): void {
+  Zone2Zone(){
+
   }
+
+  ngOnInit(): void {
+    this.selected = "Geo2UTM";
+  }
+
+  conversiones = [
+    {value: 'Geo2UTM', viewValue: 'Geodésicas a UTM'},
+    {value: 'Geo2TME', viewValue: 'Geodésicas a TME'},
+    {value: 'TME2Geo', viewValue: 'TME a Geodésicas'},
+    {value: 'TME2UTM', viewValue: 'TME a UTM'},
+    {value: 'TME2TME', viewValue: 'TME a TME'},
+    {value: 'UTM2Geo', viewValue: 'UTM a Geodésicas'},
+    {value: 'UTM2TME', viewValue: 'UTM a TME'},
+    {value: 'UTMZones', viewValue: 'Cambio de zonas UTM'},
+  ];
+
+
 }
 
