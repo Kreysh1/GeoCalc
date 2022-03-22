@@ -1,0 +1,45 @@
+<!-- <form class="example-form">
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Latitud</mat-label>
+        <input id="Latitud" name="Latitud" [(ngModel)]="Latitud" matInput placeholder="g m s.sss">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Longitud</mat-label>
+        <input matInput placeholder="g m s.sss">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Datum</mat-label>
+        <select matNativeControl required>
+          <option value="ITRF92">ITRF92</option>
+          <option value="WGS84">WGS84</option>
+        </select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <button mat-raised-button (click)="Calcular();">Calcular</button>
+    </mat-form-field>
+
+</form> -->
+
+<!-- <mat-form-field appearance="fill">
+    <mat-label>Textarea</mat-label>
+    <textarea style="width: 600px; height: 100px;" matInput></textarea>
+</mat-form-field> -->
+
+<div class="row">
+    <div class="col">
+        <label for="latitud">Latitud</label>
+        <input [(ngModel)]="Latitud" type="text" placeholder="g m s.sss" class="form-control">
+    </div>
+    <div class="col">
+        <label for="latitud">Longitud</label>
+        <input [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
+        
+    </div>
+    <button mat-raised-button (click)="Calcular(Latitud,Longitud);">Calcular</button>
+
+    <textarea name="resultados" id="resultados" cols="30" rows="10"></textarea>
+</div>
