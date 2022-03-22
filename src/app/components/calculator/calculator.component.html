@@ -37,9 +37,12 @@
     <div class="col">
         <label for="latitud">Longitud</label>
         <input [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
-        
     </div>
-    <button mat-raised-button (click)="Calcular(Latitud,Longitud);">Calcular</button>
+    <div class="col">
+        <label for="meridiano">Meridiano Central</label>
+        <input [(ngModel)]="Meridiano" type="text" placeholder="ggg mm" class="form-control">
+    </div>
+    <button mat-raised-button (click)="Geo2TME(Latitud,Longitud,Meridiano);">Calcular</button>
 
     <textarea name="resultados" id="resultados" cols="30" rows="10"></textarea>
 </div>
