@@ -82,5 +82,7 @@
     <button *ngIf="UI7" mat-raised-button (click)="UTM2TME();">Calcular</button>
     <button *ngIf="UI8" mat-raised-button (click)="Zone2Zone();">Calcular</button>
 
-    <textarea name="resultados" id="resultados" cols="30" rows="10"></textarea>
+    <div class="md-form">
+        <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
+      </div>
 </div>
