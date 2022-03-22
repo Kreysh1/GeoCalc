@@ -75,7 +75,7 @@
     
     <button *ngIf="UI1" mat-raised-button (click)="Geo2UTM(Latitud,Longitud);">Calcular</button>
     <button *ngIf="UI2" mat-raised-button (click)="Geo2TME(Latitud,Longitud,Meridiano);">Calcular</button>
-    <button *ngIf="UI3" mat-raised-button (click)="TME2Geo();">Calcular</button>
+    <button *ngIf="UI3" mat-raised-button (click)="TME2Geo(Norte,Este,Meridiano);">Calcular</button>
     <button *ngIf="UI4" mat-raised-button (click)="TME2UTM();">Calcular</button>
     <button *ngIf="UI5" mat-raised-button (click)="TME2TME();">Calcular</button>
     <button *ngIf="UI6" mat-raised-button (click)="UTM2Geo(Norte,Este,Zona);">Calcular</button>
