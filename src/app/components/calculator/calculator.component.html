@@ -1,34 +1,3 @@
-<!-- <form class="example-form">
-
-    <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Latitud</mat-label>
-        <input id="Latitud" name="Latitud" [(ngModel)]="Latitud" matInput placeholder="g m s.sss">
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Longitud</mat-label>
-        <input matInput placeholder="g m s.sss">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Datum</mat-label>
-        <select matNativeControl required>
-          <option value="ITRF92">ITRF92</option>
-          <option value="WGS84">WGS84</option>
-        </select>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width" appearance="fill">
-        <button mat-raised-button (click)="Calcular();">Calcular</button>
-    </mat-form-field>
-
-</form> -->
-
-<!-- <mat-form-field appearance="fill">
-    <mat-label>Textarea</mat-label>
-    <textarea style="width: 600px; height: 100px;" matInput></textarea>
-</mat-form-field> -->
-
 <div class="row" style="background-color: black;">
     <mat-form-field>
         <mat-select [(ngModel)]="selectedItem" placeholder="Tipo de Conversión" [(value)]="selected" (selectionChange)="onSelected(selectedItem);">
@@ -36,7 +5,15 @@
             {{ conversion.viewValue }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+    </mat-form-field>
+
+    <mat-form-field>
+    <mat-select [(ngModel)]="selectedItem" placeholder="Datum" [(value)]="selected" (selectionChange)="onDatum(selectedItem);">
+        <mat-option *ngFor="let datum of datumInterface" [value]="datum.value">
+        {{ datum.viewValue }}
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
 </div>
 
 <div class="row">

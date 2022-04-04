@@ -9,20 +9,7 @@ export class CalculatorComponent implements OnInit {
 
   constructor() { }
 
-  //UI DEFINITION
-  UI1:boolean;
-  UI2:boolean;
-  UI3:boolean;
-  UI4:boolean;
-  UI5:boolean;
-  UI6:boolean;
-  UI7:boolean;
-  UI8:boolean;
-
-  //AREA DE RESULTADOS
-  resultados:string = "";
-
-  //CONTROL DEL SELECT (combobox)
+  //<============================================ CONTROL DEL SELECT (combobox) =========================================================>
   selected:string;
   selectedItem:string;
 
@@ -84,44 +71,54 @@ export class CalculatorComponent implements OnInit {
     else{
       this.UI8 = false;
     }
-
-    // {value: 'Geo2UTM', viewValue: 'Geodésicas a UTM'},
-    // {value: 'Geo2TME', viewValue: 'Geodésicas a TME'},
-    // {value: 'TME2Geo', viewValue: 'TME a Geodésicas'},
-    // {value: 'TME2UTM', viewValue: 'TME a UTM'},
-    // {value: 'TME2TME', viewValue: 'TME a TME'},
-    // {value: 'UTM2Geo', viewValue: 'UTM a Geodésicas'},
-    // {value: 'UTM2TME', viewValue: 'UTM a TME'},
-    // {value: 'UTMZones', viewValue: 'Cambio de zonas UTM'},
   } 
 
-  //VARIABLES DE ENTRADA
-  Latitud:string = "25 41 20.1207898782595";
-  Longitud:string = "108 29 45.970220635063";
-  Meridiano:string = "105 49 0";
-  MeridianoFinal:string = "105 49 0";
+  //<============================= UI DEFINITION (Controla el cambio de interfaces mostradas) ===========================================>
+  UI1:boolean;
+  UI2:boolean;
+  UI3:boolean;
+  UI4:boolean;
+  UI5:boolean;
+  UI6:boolean;
+  UI7:boolean;
+  UI8:boolean;
+
+  //<=============================================== AREA DE RESULTADOS =================================================================>
+  resultados:string = "";           //Es el texto que se muestra en el textarea
+
+  //<============================= VARIABLES DE ENTRADA (Obtenidas desde el formulario) =================================================>
+  // Latitud:string = "23 15 34.7562";                  // Prueba GEO->UTM
+  // Longitud:string = "111 12 32.6231";                // Prueba GEO->UTM
+  Latitud:string = "25 41 20.1207898782595";            // Prueba GEO->TME
+  Longitud:string = "108 29 45.970220635063";           // Prueba GEO->TME
+  Meridiano:string = "105 49";
+  MeridianoFinal:string = "105 49";
   Norte:number = 2848632.771;
   Este:number = 500335.227;
   Zona:number = 12;
   ZonaFinal:number = 13;
 
-  LatitudG:number;
-  LatitudM:number;
-  LatitudS:number;
+  //<============================================================ DATUM ==================================================================>
+  DatumControl:string = "ITRF92";
 
-  LongitudG:number;
-  LongitudM:number;
-  LongitudS:number;
-
-  MeridianoG:number;
-  MeridianoM:number;
-  MeridianoS:number;
+  onDatum(value:string){
+    this.DatumControl = value;
+    console.log(this.DatumControl);
+  }
 
   Geo2UTM(Latitud:string,Longitud:string){
+    let a:number;
+    let b:number;
 
-    //DATUM
-    let a:number = 6378137;
-    let b:number = 6356752.3141;
+    if(this.DatumControl == "ITRF92"){
+      a = 6378137;           //WGS84 == ITRF92(GRS80)
+      b = 6356752.3141;      //WGS84 == ITRF92(GRS80)
+    }
+    else{
+      a = 6378206.4;         //NAD27
+      b = 6356583.8;         //NAD27
+    }
+    
     let c:number = (Math.pow(a, 2)/b);
     let e:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(a, 2));                    //e2
     let ee:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(b, 2));;                  //e'2
@@ -129,27 +126,34 @@ export class CalculatorComponent implements OnInit {
     let n:number = ((a-b)/(a+b));
 
     //CALCULAR DISTANCIA MERIDIONAL (Se calcula en base al DATUM)
-    let A0:number = 0.994977106051944;
-    let A1:number = 0.005001851767455;
-    let A2:number = 0.004184862497658;
-    let A4:number = 0.000021791815429;
-    let A6:number = 0.000000123060249;
-    let A8:number = 0.000000000744632;
+    let A0:number = 1-(ee*3/4)*(1-(ee*15/16)*(1-(ee*35/36)*(1-(ee*63/64)*(1-(ee*99/100)))));
+    let A1:number = (ee*3/4)*(1-(ee*25/16)*(1-(ee*77/60)*(1-(ee*837/704)*(1-(ee*2123/1860)))));
+    let A2:number = (ee*5/8)*(1-(ee*139/144)*(1-(ee*1087/1112)*(1-(ee*513427/521760))));
+    let A4:number = (Math.pow(ee, 2)*35/72)*(1-(ee*125/64)*(1-(ee*221069/150000)));
+    let A6:number = (Math.pow(ee, 3)*105/256)*(1-(ee*1179/400));
+    let A8:number = (Math.pow(ee, 4)*231/640);  
+
+    // console.log(`A0: ${A0}`);
+    // console.log(`A1: ${A1}`);
+    // console.log(`A2: ${A2}`);
+    // console.log(`A4: ${A4}`);
+    // console.log(`A6: ${A6}`);
+    // console.log(`A8: ${A8}`);
 
     //COORDENADAS
     let x = Latitud.split(" ", 3);
     let y = Longitud.split(" ", 3);
 
-    this.LatitudG = Number(x[0]);                                                       //Latitud Grados
-    this.LatitudM = Number(x[1]);                                                       //Latitud Minutos
-    this.LatitudS = Number(x[2]);                                                       //Latitud Segundos
-    let LatitudDecimal = (this.LatitudG+(this.LatitudM/60)+(this.LatitudS/3600));       //Latitud en Decimal
+    let LatitudG = Number(x[0]);                                                        //Latitud Grados
+    let LatitudM = Number(x[1]);                                                        //Latitud Minutos
+    let LatitudS = Number(x[2]);                                                        //Latitud Segundos
+    let LatitudDecimal = (LatitudG+(LatitudM/60)+(LatitudS/3600));                      //Latitud en Decimal
     let LatitudRadians = (LatitudDecimal * (Math.PI/180));                              //Latitud en Radianes
 
-    this.LongitudG = Number(y[0]);                                                      //Longitud Grados
-    this.LongitudM = Number(y[1]);                                                      //Longitud Minutos
-    this.LongitudS = Number(y[2]);                                                      //Longitud Segundos
-    let LongitudDecimal = (this.LongitudG+(this.LongitudM/60)+(this.LongitudS/3600));   //Longitud en Decimal
+    let LongitudG = Number(y[0]);                                                       //Longitud Grados
+    let LongitudM = Number(y[1]);                                                       //Longitud Minutos
+    let LongitudS = Number(y[2]);                                                       //Longitud Segundos
+    let LongitudDecimal = (LongitudG+(LongitudM/60)+(LongitudS/3600));                  //Longitud en Decimal
     let LongitudRadians = (LongitudDecimal * (Math.PI/180));                            //Longitud en Radianes
 
     //CONSTANTES PARA CALCULO
@@ -187,8 +191,8 @@ export class CalculatorComponent implements OnInit {
 
     this.resultados += `Conversión de Coordenadas Geodésicas a UTM (YYYY-MM-DD HH:MM:SS)\nNorte: ${UTM_Norte}\nEste: ${UTM_Este}\nZona: ${Zone}\n`;
 
-    console.log(`Latitud => |  G:${this.LatitudG} M:${this.LatitudM} S:${this.LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
-    console.log(`Longitud => |  G:${this.LongitudG} M:${this.LongitudM} S:${this.LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
+    console.log(`Latitud => |  G:${LatitudG} M:${LatitudM} S:${LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
+    console.log(`Longitud => |  G:${LongitudG} M:${LongitudM} S:${LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
 
     console.log(
       `DATUM => |  
@@ -207,9 +211,18 @@ export class CalculatorComponent implements OnInit {
   }
 
   Geo2TME(Latitud:string,Longitud:string,Meridiano:string){
-    //DATUM
-    let a:number = 6378137;
-    let b:number = 6356752.3141;
+    let a:number;
+    let b:number;
+
+    if(this.DatumControl == "ITRF92"){
+      a = 6378137;           //WGS84 == ITRF92(GRS80)
+      b = 6356752.3141;      //WGS84 == ITRF92(GRS80)
+    }
+    else{
+      a = 6378206.4;         //NAD27
+      b = 6356583.8;         //NAD27
+    }
+    
     let c:number = (Math.pow(a, 2)/b);
     let e:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(a, 2));                    //e2
     let ee:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(b, 2));;                  //e'2
@@ -217,42 +230,49 @@ export class CalculatorComponent implements OnInit {
     let n:number = ((a-b)/(a+b));
 
     //CALCULAR DISTANCIA MERIDIONAL (Se calcula en base al DATUM)
-    let A0:number = 0.994977106051944;
-    let A1:number = 0.005001851767455;
-    let A2:number = 0.004184862497658;
-    let A4:number = 0.000021791815429;
-    let A6:number = 0.000000123060249;
-    let A8:number = 0.000000000744632;
+    let A0:number = 1-(ee*3/4)*(1-(ee*15/16)*(1-(ee*35/36)*(1-(ee*63/64)*(1-(ee*99/100)))));
+    let A1:number = (ee*3/4)*(1-(ee*25/16)*(1-(ee*77/60)*(1-(ee*837/704)*(1-(ee*2123/1860)))));
+    let A2:number = (ee*5/8)*(1-(ee*139/144)*(1-(ee*1087/1112)*(1-(ee*513427/521760))));
+    let A4:number = (Math.pow(ee, 2)*35/72)*(1-(ee*125/64)*(1-(ee*221069/150000)));
+    let A6:number = (Math.pow(ee, 3)*105/256)*(1-(ee*1179/400));
+    let A8:number = (Math.pow(ee, 4)*231/640);  
+
+    // console.log(`A0: ${A0}`);
+    // console.log(`A1: ${A1}`);
+    // console.log(`A2: ${A2}`);
+    // console.log(`A4: ${A4}`);
+    // console.log(`A6: ${A6}`);
+    // console.log(`A8: ${A8}`);
 
     //COORDENADAS
     let x = Latitud.split(" ", 3);
     let y = Longitud.split(" ", 3);
-    let z = Meridiano.split(" ", 3);
+    let z = Meridiano.split(" ", 2);
 
-    this.LatitudG = Number(x[0]);                                                       //Latitud Grados
-    this.LatitudM = Number(x[1]);                                                       //Latitud Minutos
-    this.LatitudS = Number(x[2]);                                                       //Latitud Segundos
-    let LatitudDecimal = (this.LatitudG+(this.LatitudM/60)+(this.LatitudS/3600));       //Latitud en Decimal
+    let LatitudG = Number(x[0]);                                                        //Latitud Grados
+    let LatitudM = Number(x[1]);                                                        //Latitud Minutos
+    let LatitudS = Number(x[2]);                                                        //Latitud Segundos
+    let LatitudDecimal = (LatitudG+(LatitudM/60)+(LatitudS/3600));                      //Latitud en Decimal
     let LatitudRadians = (LatitudDecimal * (Math.PI/180));                              //Latitud en Radianes
 
-    this.LongitudG = Number(y[0]);                                                      //Longitud Grados
-    this.LongitudM = Number(y[1]);                                                      //Longitud Minutos
-    this.LongitudS = Number(y[2]);                                                      //Longitud Segundos
-    let LongitudDecimal = (this.LongitudG+(this.LongitudM/60)+(this.LongitudS/3600));   //Longitud en Decimal
+    let LongitudG = Number(y[0]);                                                       //Longitud Grados
+    let LongitudM = Number(y[1]);                                                       //Longitud Minutos
+    let LongitudS = Number(y[2]);                                                       //Longitud Segundos
+    let LongitudDecimal = (LongitudG+(LongitudM/60)+(LongitudS/3600));                  //Longitud en Decimal
     let LongitudRadians = (LongitudDecimal * (Math.PI/180));                            //Longitud en Radianes
 
-    this.MeridianoG = Number(z[0]);                                                       //Meridiano Central Grados
-    this.MeridianoM = Number(z[1]);                                                       //Meridiano Minutos
-    this.MeridianoS = Number(z[2]);                                                       //Meridiano Segundos
+    let MeridianoG = Number(z[0]);                                                      //Meridiano Central Grados
+    let MeridianoM = Number(z[1]);                                                      //Meridiano Minutos
+    let MeridianoDecimal = (MeridianoG+(MeridianoM/60));                                //Meridiano en Decimal
 
     //CONSTANTES PARA CALCULO
-    let Ko:number = 1;                                                             //Factor de Escala
+    let Ko:number = 1;                                                                  //Factor de Escala
     let No:number = 0;                                                                  //Falso Norte
     let Eo:number = 500000;                                                             //Falso Este
+    let Lo:number = MeridianoDecimal;                                                   //Longitud Meridiano Central
     let Lp:number = LongitudDecimal;                                                    //Longitud Geodesica del Punto
     let Zone:number = 30 - Math.trunc(Lp/6);                                            //Zona UTM
-    let Lo:number = 183-(6*Zone);                                                       //Longitud Meridiano Central
-
+    
     //VARIABLES DEL CALCULO
     let N:number = (a/(Math.sqrt(1-e*Math.pow(Math.sin(LatitudRadians),2))));
     let L:number = ((Lo-Lp) * (Math.PI/180));                                           //Diferencia de longitudes en Radianes
@@ -274,12 +294,13 @@ export class CalculatorComponent implements OnInit {
     Este[3] = ((N*Math.pow(L,7)*Math.pow(Math.cos(LatitudRadians),7))/5040)*(61-(479*tt)+(179*Math.pow(tt,2))-(Math.pow(tt,3)));
     Este[4] = Este[0]+Este[1]+Este[2]+Este[3];
 
-
     let TME_Norte:number = (Norte[4]+dist)*Ko+No;
     let TME_Este:number = Este[4]*Ko+Eo;
 
-    console.log(`Latitud => |  G:${this.LatitudG} M:${this.LatitudM} S:${this.LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
-    console.log(`Longitud => |  G:${this.LongitudG} M:${this.LongitudM} S:${this.LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
+    this.resultados += `Conversión de Coordenadas TME a Geodésicas (YYYY-MM-DD HH:MM:SS)\nNorte: ${TME_Norte}\nEste: ${TME_Este}\nZona: ${Zone}\n`;
+
+    console.log(`Latitud => |  G:${LatitudG} M:${LatitudM} S:${LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
+    console.log(`Longitud => |  G:${LongitudG} M:${LongitudM} S:${LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
 
     console.log(
       `DATUM => |  
@@ -301,14 +322,22 @@ export class CalculatorComponent implements OnInit {
     //MERIDIANO CENTRAL
     let z = Meridiano.split(" ", 3);
 
-    this.MeridianoG = Number(z[0]);                                                             //Meridiano Central Grados
-    this.MeridianoM = Number(z[1]);                                                             //Meridiano Minutos
-    this.MeridianoS = Number(z[2]);                                                             //Meridiano Segundos
-    let MeridianoDecimal:number = this.MeridianoG+(this.MeridianoM/60)+(this.MeridianoS/3600);  //Meridiano en Decimal
+    let MeridianoG = Number(z[0]);                                                             //Meridiano Central Grados
+    let MeridianoM = Number(z[1]);                                                             //Meridiano Minutos
+    let MeridianoDecimal:number = MeridianoG+(MeridianoM/60);                                 //Meridiano en Decimal
 
-    //DATUM
-    let a:number = 6378137;
-    let b:number = 6356752.3141;
+    let a:number;
+    let b:number;
+
+    if(this.DatumControl == "ITRF92"){
+      a = 6378137;           //WGS84 == ITRF92(GRS80)
+      b = 6356752.3141;      //WGS84 == ITRF92(GRS80)
+    }
+    else{
+      a = 6378206.4;         //NAD27
+      b = 6356583.8;         //NAD27
+    }
+    
     let c:number = (Math.pow(a, 2)/b);
     let e:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(a, 2));                    //e2
     let ee:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(b, 2));;                  //e'2
@@ -316,18 +345,25 @@ export class CalculatorComponent implements OnInit {
     let n:number = ((a-b)/(a+b));
 
     //CALCULAR DISTANCIA MERIDIONAL (Se calcula en base al DATUM)
-    let A0:number = 0.994977106051944;
-    let A1:number = 0.005001851767455;
-    let A2:number = 0.004184862497658;
-    let A4:number = 0.000021791815429;
-    let A6:number = 0.000000123060249;
-    let A8:number = 0.000000000744632;
+    let A0:number = 1-(ee*3/4)*(1-(ee*15/16)*(1-(ee*35/36)*(1-(ee*63/64)*(1-(ee*99/100)))));
+    let A1:number = (ee*3/4)*(1-(ee*25/16)*(1-(ee*77/60)*(1-(ee*837/704)*(1-(ee*2123/1860)))));
+    let A2:number = (ee*5/8)*(1-(ee*139/144)*(1-(ee*1087/1112)*(1-(ee*513427/521760))));
+    let A4:number = (Math.pow(ee, 2)*35/72)*(1-(ee*125/64)*(1-(ee*221069/150000)));
+    let A6:number = (Math.pow(ee, 3)*105/256)*(1-(ee*1179/400));
+    let A8:number = (Math.pow(ee, 4)*231/640);  
+
+    // console.log(`A0: ${A0}`);
+    // console.log(`A1: ${A1}`);
+    // console.log(`A2: ${A2}`);
+    // console.log(`A4: ${A4}`);
+    // console.log(`A6: ${A6}`);
+    // console.log(`A8: ${A8}`);
 
     //CONSTANTES PARA CALCULO
     let Ko:number = 1;                                                                  //Factor de Escala
     let No:number = 0;                                                                  //Falso Norte
     let Eo:number = 500000;                                                             //Falso Este
-    let Lo:number = MeridianoDecimal;                                                   ////Longitud Meridiano Central (DECIMAL)
+    let Lo:number = MeridianoDecimal;                                                   //Longitud Meridiano Central (DECIMAL)
 
     //VARIABLES DE LA INVERSA
     let E:number = (Este-Eo)/Ko;
@@ -381,8 +417,8 @@ export class CalculatorComponent implements OnInit {
     let LongitudM = Math.trunc((60*(LongitudX-LongitudG)));
     let LongitudS = (LongitudX-LongitudG-LongitudM/60)*3600;
 
-    // console.log(`Latitud => |  G:${this.LatitudG} M:${this.LatitudM} S:${this.LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
-    // console.log(`Longitud => |  G:${this.LongitudG} M:${this.LongitudM} S:${this.LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
+    // console.log(`Latitud => |  G:${LatitudG} M:${LatitudM} S:${LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
+    // console.log(`Longitud => |  G:${LongitudG} M:${LongitudM} S:${LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
 
     console.log(
       `DATUM => |  
@@ -403,17 +439,18 @@ export class CalculatorComponent implements OnInit {
   }
 
   TME2UTM(){
+    let a:number;
+    let b:number;
 
-  }
-
-  TME2TME(Norte:number,Este:number,Meridiano:string,MeridianoFinal:string){
-
-  }
-
-  UTM2Geo(Norte:number,Este:number,Zona:number){
-    //DATUM
-    let a:number = 6378137;
-    let b:number = 6356752.3141;
+    if(this.DatumControl == "ITRF92"){
+      a = 6378137;           //WGS84 == ITRF92(GRS80)
+      b = 6356752.3141;      //WGS84 == ITRF92(GRS80)
+    }
+    else{
+      a = 6378206.4;         //NAD27
+      b = 6356583.8;         //NAD27
+    }
+    
     let c:number = (Math.pow(a, 2)/b);
     let e:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(a, 2));                    //e2
     let ee:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(b, 2));;                  //e'2
@@ -421,12 +458,58 @@ export class CalculatorComponent implements OnInit {
     let n:number = ((a-b)/(a+b));
 
     //CALCULAR DISTANCIA MERIDIONAL (Se calcula en base al DATUM)
-    let A0:number = 0.994977106051944;
-    let A1:number = 0.005001851767455;
-    let A2:number = 0.004184862497658;
-    let A4:number = 0.000021791815429;
-    let A6:number = 0.000000123060249;
-    let A8:number = 0.000000000744632;
+    let A0:number = 1-(ee*3/4)*(1-(ee*15/16)*(1-(ee*35/36)*(1-(ee*63/64)*(1-(ee*99/100)))));
+    let A1:number = (ee*3/4)*(1-(ee*25/16)*(1-(ee*77/60)*(1-(ee*837/704)*(1-(ee*2123/1860)))));
+    let A2:number = (ee*5/8)*(1-(ee*139/144)*(1-(ee*1087/1112)*(1-(ee*513427/521760))));
+    let A4:number = (Math.pow(ee, 2)*35/72)*(1-(ee*125/64)*(1-(ee*221069/150000)));
+    let A6:number = (Math.pow(ee, 3)*105/256)*(1-(ee*1179/400));
+    let A8:number = (Math.pow(ee, 4)*231/640);  
+
+    // console.log(`A0: ${A0}`);
+    // console.log(`A1: ${A1}`);
+    // console.log(`A2: ${A2}`);
+    // console.log(`A4: ${A4}`);
+    // console.log(`A6: ${A6}`);
+    // console.log(`A8: ${A8}`);      
+  }
+
+  TME2TME(Norte:number,Este:number,Meridiano:string,MeridianoFinal:string){
+
+  }
+
+  UTM2Geo(Norte:number,Este:number,Zona:number){
+    let a:number;
+    let b:number;
+
+    if(this.DatumControl == "ITRF92"){
+      a = 6378137;           //WGS84 == ITRF92(GRS80)
+      b = 6356752.3141;      //WGS84 == ITRF92(GRS80)
+    }
+    else{
+      a = 6378206.4;         //NAD27
+      b = 6356583.8;         //NAD27
+    }
+    
+    let c:number = (Math.pow(a, 2)/b);
+    let e:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(a, 2));                    //e2
+    let ee:number = ((Math.pow(a, 2)-Math.pow(b, 2))/Math.pow(b, 2));;                  //e'2
+    let f:number = ((a-b)/a);                                                           //Achatamiento del Elipsoide de Referencia
+    let n:number = ((a-b)/(a+b));
+
+    //CALCULAR DISTANCIA MERIDIONAL (Se calcula en base al DATUM)
+    let A0:number = 1-(ee*3/4)*(1-(ee*15/16)*(1-(ee*35/36)*(1-(ee*63/64)*(1-(ee*99/100)))));
+    let A1:number = (ee*3/4)*(1-(ee*25/16)*(1-(ee*77/60)*(1-(ee*837/704)*(1-(ee*2123/1860)))));
+    let A2:number = (ee*5/8)*(1-(ee*139/144)*(1-(ee*1087/1112)*(1-(ee*513427/521760))));
+    let A4:number = (Math.pow(ee, 2)*35/72)*(1-(ee*125/64)*(1-(ee*221069/150000)));
+    let A6:number = (Math.pow(ee, 3)*105/256)*(1-(ee*1179/400));
+    let A8:number = (Math.pow(ee, 4)*231/640);  
+
+    // console.log(`A0: ${A0}`);
+    // console.log(`A1: ${A1}`);
+    // console.log(`A2: ${A2}`);
+    // console.log(`A4: ${A4}`);
+    // console.log(`A6: ${A6}`);
+    // console.log(`A8: ${A8}`);
 
     //CONSTANTES PARA CALCULO
     let Ko:number = 0.9996;                                                             //Factor de Escala
@@ -486,8 +569,8 @@ export class CalculatorComponent implements OnInit {
     let LongitudM = Math.trunc((60*(LongitudX-LongitudG)));
     let LongitudS = (LongitudX-LongitudG-LongitudM/60)*3600;
 
-    // console.log(`Latitud => |  G:${this.LatitudG} M:${this.LatitudM} S:${this.LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
-    // console.log(`Longitud => |  G:${this.LongitudG} M:${this.LongitudM} S:${this.LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
+    // console.log(`Latitud => |  G:${LatitudG} M:${LatitudM} S:${LatitudS} | Decimal:${LatitudDecimal} Radianes:${LatitudRadians}`);
+    // console.log(`Longitud => |  G:${LongitudG} M:${LongitudM} S:${LongitudS} | Decimal:${LongitudDecimal} Radianes:${LongitudRadians}`);
 
     console.log(
       `DATUM => |  
@@ -531,6 +614,8 @@ export class CalculatorComponent implements OnInit {
     {value: 'UTMZones', viewValue: 'Cambio de zonas UTM'},
   ];
 
-
+  datumInterface = [
+    {value: 'ITRF92', viewValue: 'ITRF92'},
+    {value: 'NAD27', viewValue: 'NAD27'}
+  ];
 }
-
