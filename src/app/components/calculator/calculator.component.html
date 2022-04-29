@@ -1,19 +1,22 @@
-<div class="row" style="background-color: black;">
-    <mat-form-field>
-        <mat-select [(ngModel)]="selectedItem" placeholder="Tipo de Conversión" [(value)]="selected" (selectionChange)="onSelected(selectedItem);">
-          <mat-option *ngFor="let conversion of conversiones" [value]="conversion.value">
-            {{ conversion.viewValue }}
-          </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-    <mat-select [(ngModel)]="selectedItem" placeholder="Datum" [(value)]="selected" (selectionChange)="onDatum(selectedItem);">
-        <mat-option *ngFor="let datum of datumInterface" [value]="datum.value">
-        {{ datum.viewValue }}
-        </mat-option>
-    </mat-select>
-    </mat-form-field>
+<div class="row" style="background-color: black; z-index: 0;">
+    <div class="col">
+        <mat-form-field>
+            <mat-select [(ngModel)]="selectedItem" placeholder="Tipo de Conversión" [(value)]="selected" (selectionChange)="onSelected(selectedItem);">
+                <mat-option *ngFor="let conversion of conversiones" [value]="conversion.value">
+                    {{ conversion.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <mat-select [(ngModel)]="selectedItem" placeholder="Datum" [(value)]="selected" (selectionChange)="onDatum(selectedItem);">
+                <mat-option *ngFor="let datum of datumInterface" [value]="datum.value">
+                {{ datum.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 </div>
 
 <div class="row">
@@ -59,7 +62,7 @@
     <button *ngIf="UI7" mat-raised-button (click)="UTM2TME();">Calcular</button>
     <button *ngIf="UI8" mat-raised-button (click)="Zone2Zone(Norte,Este,Zona,ZonaFinal);">Calcular</button>
 
-    <div class="md-form">
+    <div class="md-form" style="margin-top: 10px;">
         <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
       </div>
 </div>

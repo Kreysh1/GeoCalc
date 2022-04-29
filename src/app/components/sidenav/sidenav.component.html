@@ -1,1 +1,26 @@
-<p>sidenav works!</p>
+<button mat-icon-button (click)="openLoginDialog()"></button>
+<div class="sidebar-slider" [class.sidebar-slide-in]="sidebarShow">
+    <button class="sidebar-close" (click)="sidebarShow = !sidebarShow">=</button>
+    <div class="sidebar-content">
+        <h2 class="set-align">Menú</h2>
+        <div class="set-sidebar-text">Perfil</div>
+        <div class="set-sidebar-text">Ajustes</div>
+    </div>
+</div>
+
+<!-- <button mat-icon-button *ngIf="userLogged|async as user; else Loggin" [matMenuTriggerFor]="menu" (click)="getUserLogged()">
+    <img class="userIcon" *ngIf="user.photoURL; else accIcon"  src="{{user.photoURL}}">
+    <ng-template #accIcon ><mat-icon class="logged">account_circle</mat-icon></ng-template>
+</button> -->
+
+<mat-menu  #menu="matMenu">
+    <button mat-icon-button (click)="logout()">
+    <a style="color: black; margin-left: 10px;">Logout</a>
+    </button>
+</mat-menu>
+
+<ng-template #Loggin >
+    <button mat-icon-button (click)="openLoginDialog()">
+    <mat-icon>account_circle</mat-icon>
+    </button>
+</ng-template>

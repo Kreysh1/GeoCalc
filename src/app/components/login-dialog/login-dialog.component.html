@@ -1,0 +1,106 @@
+<h1 mat-dialog-title>Únete a nosotros</h1>
+
+<mat-tab-group>
+
+  <mat-tab label="Iniciar Sesión">
+    <form class="login-form" [formGroup]="loginForm">
+
+      <!------------------------------EMAIL---------------------------------------------------->
+      <mat-form-field class="login-full-width" appearance="fill">
+        <mat-label>Correo Electrónico</mat-label>
+
+        <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher" formControlName="email" placeholder="Ex. correo@dominio.com">
+      </mat-form-field>
+      <!-- [errorStateMatcher]="matcher" -->
+      <div *ngIf="loginForm.controls['email'].errors" >
+        <mat-error *ngIf="loginForm.controls['email'].errors['required']">
+          Se requiere un <strong>correo electronico</strong>
+        </mat-error>
+      </div>
+
+      <!------------------------------PASSWORD---------------------------------------------------->
+      <mat-form-field class="login-full-width" appearance="fill">
+        <mat-label>Contraseña</mat-label>
+
+        <input matInput [type]="pass1Visibility ? 'password' : 'text'" formControlName="password">
+        <mat-icon matSuffix (click)="pass1Visibility = !pass1Visibility">{{pass1Visibility ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+
+      <!-----------------------------LOGIN BUTTON---------------------------------------------------------------->
+      <button style="margin-top: 10px;" type="submit" mat-raised-button color="primary" (click)="onLogin()">Iniciar Sesión</button>
+      <!--------------------------------------------------------------------------------------------------------->
+    </form>
+  </mat-tab>
+
+  <mat-tab label="Registrarse"> 
+    <form class="signin-form" [formGroup]="signinForm">
+
+      <!------------------------------EMAIL---------------------------------------------------->
+      <mat-form-field class="login-full-width" appearance="fill">
+        <mat-label>Correo Electrónico</mat-label>
+
+        <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher" formControlName="email" placeholder="Ex. correo@dominio.com">
+      </mat-form-field>
+
+      <div *ngIf="signinForm.controls['email'].errors" >
+        <mat-error *ngIf="signinForm.controls['email'].errors['required']">
+          Se requiere un <strong>correo electronico</strong>
+        </mat-error>
+      </div>
+
+      <!------------------------------PASSWORD---------------------------------------------------->
+      <mat-form-field class="login-full-width" appearance="fill">
+        <mat-label>Contraseña</mat-label>
+
+        <input matInput [type]="pass2Visibility ? 'password' : 'text'" formControlName="password">
+
+        <mat-icon matSuffix (click)="pass2Visibility = !pass2Visibility">{{pass2Visibility ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+
+      <div *ngIf="signinForm.controls['password'].errors">
+        <mat-error *ngIf="signinForm.controls['password'].errors['required']">
+          Se requiere una <strong>constraseña</strong>
+        </mat-error>
+
+        <mat-error *ngIf="signinForm.controls['password'].errors['minlength'] && !signinForm.controls['password'].errors['required']">
+          Al menos <strong>8 caracteres</strong>
+        </mat-error>
+      
+        <mat-error *ngIf="signinForm.controls['password'].errors['hasNumber'] && !signinForm.controls['password'].errors['required']">
+          Al menos un <strong>número</strong>
+        </mat-error>
+
+        <mat-error *ngIf="signinForm.controls['password'].errors['hasCapitalCase'] && !signinForm.controls['password'].errors['required']">
+          Al menos una <strong>letra capital</strong>
+        </mat-error>
+
+        <mat-error *ngIf="signinForm.controls['password'].errors['hasSmallCase'] && !signinForm.controls['password'].errors['required']">
+          Al menos una <strong>letra minuscula</strong>
+        </mat-error>
+
+        <mat-error *ngIf="signinForm.controls['password'].errors['hasSpecialCharacter'] && !signinForm.controls['password'].errors['required']">
+          Al menos un <strong>caracter especial</strong>
+        </mat-error>
+      </div>
+
+      <!------------------------------CONFIRM PASSWORD---------------------------------------------------->
+      <mat-form-field class="login-full-width" appearance="fill">
+        <mat-label>Confirmar contraseña</mat-label>
+
+        <input matInput [type]="passConfVisibility ? 'password' : 'text'" formControlName="confirm">
+        
+        <mat-icon matSuffix (click)="passConfVisibility = !passConfVisibility">{{passConfVisibility ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+
+      <div *ngIf="signinForm.controls['confirm'].errors">
+        <mat-error *ngIf="signinForm.controls['confirm'].errors['NoPasswordMatch'] && !signinForm.controls['confirm'].errors['required']">
+          La constraseña <strong>no coincide</strong>
+        </mat-error>
+      </div>
+      <!-----------------------------SIGNIN BUTTON---------------------------------------------------------------->
+      <button style="margin-top: 10px;" type="submit" mat-raised-button color="primary" (click)="onRegister()">Registrarse</button>
+      <!------------------------------------------------------------------------------------------------->
+    </form>
+  </mat-tab>
+
+</mat-tab-group>
