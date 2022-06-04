@@ -8,7 +8,7 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="col">
+    <div *ngIf="notDatum == false" class="col">
         <mat-form-field>
             <mat-select [(ngModel)]="selectedItem" placeholder="Datum" [(value)]="selected" (selectionChange)="onDatum(selectedItem);">
                 <mat-option *ngFor="let datum of datumInterface" [value]="datum.value">
@@ -20,23 +20,23 @@
 </div>
 
 <div class="row">
-    <div class="col" *ngIf="UI1 || UI2">
+    <div class="col" *ngIf="UI1 || UI2 || UI9">
         <label for="latitud">Latitud</label>
-        <input [(ngModel)]="Latitud" type="text" placeholder="g m s.sss" class="form-control">
+        <input id="latitud" [(ngModel)]="Latitud" type="text" placeholder="g m s.sss" class="form-control">
     </div>
-    <div class="col" *ngIf="UI1 || UI2">
-        <label for="latitud">Longitud</label>
-        <input [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
+    <div class="col" *ngIf="UI1 || UI2 || UI9">
+        <label for="longitud">Longitud</label>
+        <input id="longitud" [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
     </div>
-    <div class="col" *ngIf="UI3 || UI4 || UI5 || UI6 || UI7 || UI8">
+    <div class="col" *ngIf="UI3 || UI4 || UI5 || UI6 || UI7 || UI8 || UI10 || UI11">
         <label for="norte">Norte</label>
-        <input [(ngModel)]="Norte" type="text" placeholder="g m s.sss" class="form-control">
+        <input [(ngModel)]="Norte" type="text" placeholder="Y (mts.)" class="form-control">
     </div>
-    <div class="col" *ngIf="UI3 || UI4 || UI4 || UI5 || UI6 || UI7 || UI8">
+    <div class="col" *ngIf="UI3 || UI4 || UI4 || UI5 || UI6 || UI7 || UI8 || UI10 || UI11">
         <label for="este">Este</label>
-        <input [(ngModel)]="Este" type="text" placeholder="g m s.sss" class="form-control">
+        <input [(ngModel)]="Este" type="text" placeholder="X (mts.)" class="form-control">
     </div>
-    <div class="col" *ngIf="UI6 || UI7 || UI8">
+    <div class="col" *ngIf="UI6 || UI7 || UI8 || UI10">
         <label for="zona">Zona</label>
         <input [(ngModel)]="Zona" type="number" placeholder="" min="11" max="16" class="form-control">
     </div>
@@ -44,7 +44,7 @@
         <label for="zona2">Zona Final</label>
         <input [(ngModel)]="ZonaFinal" type="number" placeholder="" min="11" max="16" class="form-control">
     </div>
-    <div class="col" *ngIf="UI3 || UI4 || UI5">
+    <div class="col" *ngIf="UI3 || UI4 || UI5 || UI11">
         <label for="meridiano1">Meridiano Central</label>
         <input [(ngModel)]="Meridiano" type="text" placeholder="ggg mm" class="form-control">
     </div>
@@ -54,13 +54,16 @@
     </div>
     
     <button *ngIf="UI1" mat-raised-button (click)="Geo2UTM(Latitud,Longitud);">Calcular</button>
-    <button *ngIf="UI2" mat-raised-button (click)="Geo2TME(Latitud,Longitud,Meridiano);">Calcular</button>
+    <button *ngIf="UI2" mat-raised-button (click)="Geo2TME(Latitud,Longitud,MeridianoFinal);">Calcular</button>
     <button *ngIf="UI3" mat-raised-button (click)="TME2Geo(Norte,Este,Meridiano);">Calcular</button>
     <button *ngIf="UI4" mat-raised-button (click)="TME2UTM(Norte,Este,Meridiano);">Calcular</button>
     <button *ngIf="UI5" mat-raised-button (click)="TME2TME(Norte,Este,Meridiano,MeridianoFinal);">Calcular</button>
     <button *ngIf="UI6" mat-raised-button (click)="UTM2Geo(Norte,Este,Zona);">Calcular</button>
     <button *ngIf="UI7" mat-raised-button (click)="UTM2TME(Norte,Este,Zona,MeridianoFinal);">Calcular</button>
     <button *ngIf="UI8" mat-raised-button (click)="Zone2Zone(Norte,Este,Zona,ZonaFinal);">Calcular</button>
+    <button *ngIf="UI9" mat-raised-button (click)="CompareGeo();">Calcular</button>
+    <button *ngIf="UI10" mat-raised-button (click)="CompareUTM(Norte,Este,Zona);">Calcular</button>
+    <button *ngIf="UI11" mat-raised-button (click)="CompareTME(Norte,Este,Meridiano);">Calcular</button>
 
     <div class="md-form" style="margin-top: 10px;">
         <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
