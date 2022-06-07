@@ -67,5 +67,55 @@
 
     <div class="md-form" style="margin-top: 10px;">
         <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
-      </div>
+    </div>
+    <div class="md-form" style="margin-top: 10px;">
+        <textarea [(ngModel)]="procedimiento" type="text" name="procedimiento" id="procedimiento" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
+    </div>
+
+    <div class="footer">
+        <div class="info">
+            <br>
+            • Ko: Factor de Escala.<br>
+            • No: Falso Norte.<br>
+            • Eo: Falso Este.<br>
+            • Lp: Longitud Geodesica del Punto. = Longitud en Decimal<br>
+            • Lo: Longitud Meridiano Central.<br>
+            • N:<br>
+            • L: Diferencia de longitudes.(radianes)<br>
+            • t²:<br>
+            • n²:<br>
+        </div>
+        <div class="datum">
+            <div class="ITRF">
+                <h1>ITRF92</h1>
+                • a = 6378137<br>
+                • b = 6356752.3141<br>
+                • 1/f = <br>
+                • e'2 = <br>
+                • e² = <br>
+                • A0 = <br>
+                • A1 = <br>
+                • A2 = <br>
+                • A4 = <br>
+                • A6 = <br>
+                • A8 = <br>
+            </div>
+            <div class="NAD">
+                <h1 matTooltip="ToolTip">NAD27</h1>
+                • a = 6378206.4<br>
+                • b = 6356583.8<br>
+                • 1/f = <br>
+                • e'2 = <br>
+                • e² = <br>
+                • A0 = <br>
+                • A1 = <br>
+                • A2 = <br>
+                • A4 = <br>
+                • A6 = <br>
+                • A8 = <br>
+            </div>
+            <br>
+        </div>
+    </div>
+    
 </div>

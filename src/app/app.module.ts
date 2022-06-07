@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // COMPONENTS
 import { AppComponent } from './app.component';
@@ -42,7 +43,8 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
     MatMenuModule,
     MatTabsModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

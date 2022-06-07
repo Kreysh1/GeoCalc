@@ -8,3 +8,24 @@
 .example-full-width {
   width: 100%;
 }
+
+.footer{
+  display: flex;
+}
+
+.info{
+  width: 50%;
+}
+
+.datum{
+  width: 50%;
+  display: flex;
+}
+
+.ITRF{
+  width: 50%;
+}
+
+.NAD{
+  width: 50%;
+}
