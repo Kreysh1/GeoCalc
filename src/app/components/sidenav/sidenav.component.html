@@ -1,26 +1,26 @@
-<!-- <button mat-icon-button (click)="openLoginDialog()"></button>
-<div class="sidebar-slider" [class.sidebar-slide-in]="sidebarShow">
-    <button class="sidebar-close" (click)="sidebarShow = !sidebarShow">=</button>
-    <div class="sidebar-content">
-        <h2 class="set-align">Menú</h2>
-        <div class="set-sidebar-text">Perfil</div>
-        <div class="set-sidebar-text">Ajustes</div>
-    </div>
-</div> -->
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === true">
+        <mat-toolbar>Navegacion</mat-toolbar>
+        <mat-nav-list class="nav">
 
-<!-- <button mat-icon-button *ngIf="userLogged|async as user; else Loggin" [matMenuTriggerFor]="menu" (click)="getUserLogged()">
-    <img class="userIcon" *ngIf="user.photoURL; else accIcon"  src="{{user.photoURL}}">
-    <ng-template #accIcon ><mat-icon class="logged">account_circle</mat-icon></ng-template>
-</button> -->
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="secondary">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        Calculadora geodésica de coordenadas UTM y TME para México
+        </mat-toolbar>
 
-<mat-menu  #menu="matMenu">
-    <button mat-icon-button (click)="logout()">
-    <a style="color: black; margin-left: 10px;">Logout</a>
-    </button>
-</mat-menu>
+        <div class="Contenido">
+            <router-outlet></router-outlet>
 
-<ng-template #Loggin >
-    <button mat-icon-button (click)="openLoginDialog()">
-    <mat-icon>account_circle</mat-icon>
-    </button>
-</ng-template>
+            <footer>
+                <mat-card>
+                    <mat-card-subtitle>Copyright © 2022 Kreysh. <a href="https://creativecommons.org/licenses/by/4.0/deed.es_ES">Licencia de Creative Commons Reconocimiento 4.0 Internacional.</a></mat-card-subtitle>
+                </mat-card>
+            </footer>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

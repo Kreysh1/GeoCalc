@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import { AuthService } from 'src/app/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-sidenav',
@@ -10,37 +12,18 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class SidenavComponent implements OnInit {
 
-  constructor(private authService: AuthService, public _dialog: MatDialog) { }
+  constructor(private breakpointObserver: BreakpointObserver) { }
 
-  public sidebarShow: boolean = false;
+  version: string;
 
-  userLogged = this.authService.getUserLogged();
-
-  openLoginDialog(): void {
-    const dialogRef = this._dialog.open(LoginDialogComponent, {
-      width: '500px'
-    });
-
-    dialogRef.afterOpened().subscribe(() => {
-      console.log("The dialog was opened successfully.");
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
-  logout(){
-    //this.authService.logout();
-  }
-
-  getUserLogged(){
-    //this.authService.getUserLogged().subscribe(res =>{
-    //  console.log(`Email:${res?.email} Name:${res?.displayName}`);
-    //});
-  }
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  .pipe(
+    map(result => result.matches),
+    shareReplay()
+  );
 
   ngOnInit(): void {
+    this.version = environment.appVersion;
   }
 
 }

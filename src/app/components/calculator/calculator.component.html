@@ -1,4 +1,4 @@
-<div class="row" style="background-color: black; z-index: 0;">
+<div class="row inputs">
     <div class="col">
         <mat-form-field>
             <mat-select [(ngModel)]="selectedItem" placeholder="Tipo de Conversión" [(value)]="selected" (selectionChange)="onSelected(selectedItem);">
@@ -19,103 +19,110 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col" *ngIf="UI1 || UI2 || UI9">
-        <label for="latitud">Latitud</label>
-        <input id="latitud" [(ngModel)]="Latitud" type="text" placeholder="g m s.sss" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI1 || UI2 || UI9">
-        <label for="longitud">Longitud</label>
-        <input id="longitud" [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI3 || UI4 || UI5 || UI6 || UI7 || UI8 || UI10 || UI11">
-        <label for="norte">Norte</label>
-        <input [(ngModel)]="Norte" type="text" placeholder="Y (mts.)" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI3 || UI4 || UI4 || UI5 || UI6 || UI7 || UI8 || UI10 || UI11">
-        <label for="este">Este</label>
-        <input [(ngModel)]="Este" type="text" placeholder="X (mts.)" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI6 || UI7 || UI8 || UI10">
-        <label for="zona">Zona</label>
-        <input [(ngModel)]="Zona" type="number" placeholder="" min="11" max="16" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI8">
-        <label for="zona2">Zona Final</label>
-        <input [(ngModel)]="ZonaFinal" type="number" placeholder="" min="11" max="16" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI3 || UI4 || UI5 || UI11">
-        <label for="meridiano1">Meridiano Central</label>
-        <input [(ngModel)]="Meridiano" type="text" placeholder="ggg mm" class="form-control">
-    </div>
-    <div class="col" *ngIf="UI2 || UI5 || UI7">
-        <label for="meridiano2">Meridiano Central Final</label>
-        <input [(ngModel)]="MeridianoFinal" type="text" placeholder="ggg mm" class="form-control">
-    </div>
-    
-    <button *ngIf="UI1" mat-raised-button (click)="Geo2UTM(Latitud,Longitud);">Calcular</button>
-    <button *ngIf="UI2" mat-raised-button (click)="Geo2TME(Latitud,Longitud,MeridianoFinal);">Calcular</button>
-    <button *ngIf="UI3" mat-raised-button (click)="TME2Geo(Norte,Este,Meridiano);">Calcular</button>
-    <button *ngIf="UI4" mat-raised-button (click)="TME2UTM(Norte,Este,Meridiano);">Calcular</button>
-    <button *ngIf="UI5" mat-raised-button (click)="TME2TME(Norte,Este,Meridiano,MeridianoFinal);">Calcular</button>
-    <button *ngIf="UI6" mat-raised-button (click)="UTM2Geo(Norte,Este,Zona);">Calcular</button>
-    <button *ngIf="UI7" mat-raised-button (click)="UTM2TME(Norte,Este,Zona,MeridianoFinal);">Calcular</button>
-    <button *ngIf="UI8" mat-raised-button (click)="Zone2Zone(Norte,Este,Zona,ZonaFinal);">Calcular</button>
-    <button *ngIf="UI9" mat-raised-button (click)="CompareGeo();">Calcular</button>
-    <button *ngIf="UI10" mat-raised-button (click)="CompareUTM(Norte,Este,Zona);">Calcular</button>
-    <button *ngIf="UI11" mat-raised-button (click)="CompareTME(Norte,Este,Meridiano);">Calcular</button>
-
-    <div class="md-form" style="margin-top: 10px;">
-        <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
-    </div>
-    <div class="md-form" style="margin-top: 10px;">
-        <textarea [(ngModel)]="procedimiento" type="text" name="procedimiento" id="procedimiento" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
-    </div>
-
-    <div class="footer">
-        <div class="info">
-            <br>
-            • Ko: Factor de Escala.<br>
-            • No: Falso Norte.<br>
-            • Eo: Falso Este.<br>
-            • Lp: Longitud Geodesica del Punto. = Longitud en Decimal<br>
-            • Lo: Longitud Meridiano Central.<br>
-            • N:<br>
-            • L: Diferencia de longitudes.(radianes)<br>
-            • t²:<br>
-            • n²:<br>
+<div class="contenedor">
+    <div class="row">
+        <div class="col" *ngIf="UI1 || UI2 || UI9">
+            <label for="latitud">Latitud</label>
+            <input #latitud [(ngModel)]="Latitud" type="text" placeholder="g m s.sss" class="form-control">
         </div>
-        <div class="datum">
-            <div class="ITRF">
-                <h1>ITRF92</h1>
-                • a = 6378137<br>
-                • b = 6356752.3141<br>
-                • 1/f = <br>
-                • e'2 = <br>
-                • e² = <br>
-                • A0 = <br>
-                • A1 = <br>
-                • A2 = <br>
-                • A4 = <br>
-                • A6 = <br>
-                • A8 = <br>
-            </div>
-            <div class="NAD">
-                <h1 matTooltip="ToolTip">NAD27</h1>
-                • a = 6378206.4<br>
-                • b = 6356583.8<br>
-                • 1/f = <br>
-                • e'2 = <br>
-                • e² = <br>
-                • A0 = <br>
-                • A1 = <br>
-                • A2 = <br>
-                • A4 = <br>
-                • A6 = <br>
-                • A8 = <br>
-            </div>
-            <br>
+        <div class="col" *ngIf="UI1 || UI2 || UI9">
+            <label for="longitud">Longitud</label>
+            <input #longitud [(ngModel)]="Longitud" type="text" placeholder="g m s.sss" class="form-control">
+        </div>
+        <div class="col" *ngIf="UI3 || UI4 || UI5 || UI6 || UI7 || UI8 || UI10 || UI11">
+            <label for="norte">Norte</label>
+            <input #norte [(ngModel)]="Norte" type="text" placeholder="Y (mts.)" class="form-control">
+        </div>
+        <div class="col" *ngIf="UI3 || UI4 || UI4 || UI5 || UI6 || UI7 || UI8 || UI10 || UI11">
+            <label for="este">Este</label>
+            <input [(ngModel)]="Este" type="text" placeholder="X (mts.)" class="form-control">
+        </div>
+        <div class="col" *ngIf="UI6 || UI7 || UI8 || UI10">
+            <label for="zona">Zona</label>
+            <input [(ngModel)]="Zona" type="number" placeholder="" min="11" max="16" class="form-control">
+        </div>
+        <div class="col" *ngIf="UI8">
+            <label for="zona2">Zona Final</label>
+            <input [(ngModel)]="ZonaFinal" type="number" placeholder="" min="11" max="16" class="form-control">
+        </div>
+        <div class="col" *ngIf="UI3 || UI4 || UI5 || UI11">
+            <label for="meridiano1">Meridiano Central</label>
+            <input [(ngModel)]="Meridiano" type="text" placeholder="ggg mm" class="form-control">
+        </div>
+        <div class="col" *ngIf="UI2 || UI5 || UI7">
+            <label for="meridiano2">Meridiano Central Final</label>
+            <input [(ngModel)]="MeridianoFinal" type="text" placeholder="ggg mm" class="form-control">
+        </div>
+    </div> 
+
+    <div class="row">
+        <div class="col">
+            <button *ngIf="UI1" mat-raised-button (click)="Geo2UTM(Latitud,Longitud)">Calcular</button>
+            <button *ngIf="UI2" mat-raised-button (click)="Geo2TME(Latitud,Longitud,MeridianoFinal)">Calcular</button>
+            <button *ngIf="UI3" mat-raised-button (click)="TME2Geo(Norte,Este,Meridiano)">Calcular</button>
+            <button *ngIf="UI4" mat-raised-button (click)="TME2UTM(Norte,Este,Meridiano)">Calcular</button>
+            <button *ngIf="UI5" mat-raised-button (click)="TME2TME(Norte,Este,Meridiano,MeridianoFinal)">Calcular</button>
+            <button *ngIf="UI6" mat-raised-button (click)="UTM2Geo(Norte,Este,Zona)">Calcular</button>
+            <button *ngIf="UI7" mat-raised-button (click)="UTM2TME(Norte,Este,Zona,MeridianoFinal)">Calcular</button>
+            <button *ngIf="UI8" mat-raised-button (click)="Zone2Zone(Norte,Este,Zona,ZonaFinal)">Calcular</button>
+            <button *ngIf="UI9" mat-raised-button (click)="CompareGeo()">Calcular</button>
+            <button *ngIf="UI10" mat-raised-button (click)="CompareUTM(Norte,Este,Zona)">Calcular</button>
+            <button *ngIf="UI11" mat-raised-button (click)="CompareTME(Norte,Este,Meridiano)">Calcular</button>
+            <button mat-raised-button (click)="limpiar()">Limpiar</button>
         </div>
     </div>
+
+        <div class="md-form" style="margin-top: 10px;">
+            <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
+        </div>
+        <div class="md-form" style="margin-top: 10px;">
+            <textarea [(ngModel)]="procedimiento" type="text" name="procedimiento" id="procedimiento" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
+        </div>
+
+        <div class="footer">
+            <div class="info">
+                <br>
+                • Ko: Factor de Escala.<br>
+                • No: Falso Norte.<br>
+                • Eo: Falso Este.<br>
+                • Lp: Longitud Geodesica del Punto. = Longitud en Decimal<br>
+                • Lo: Longitud Meridiano Central.<br>
+                • N:<br>
+                • L: Diferencia de longitudes.(radianes)<br>
+                • t²:<br>
+                • n²:<br>
+            </div>
+            <div class="datum">
+                <div class="ITRF">
+                    <h1>ITRF92</h1>
+                    • a = 6378137<br>
+                    • b = 6356752.3141<br>
+                    • 1/f = 298.2572221<br>
+                    • e'2 = 0.006739497<br>
+                    • e² = 0.00669438<br>
+                    • A0 = 0.994977106<br>
+                    • A1 = 0.005001852<br>
+                    • A2 = 0.004184862<br>
+                    • A4 = 2.17918E-05<br>
+                    • A6 = 1.2306E-07<br>
+                    • A8 = 7.44632E-10<br>
+                </div>
+                <div class="NAD">
+                    <h1 matTooltip="ToolTip">NAD27</h1>
+                    • a = 6378206.4<br>
+                    • b = 6356583.8<br>
+                    • 1/f = 294.9786982138982<br>
+                    • e'2 = 0.006814784945915172<br>
+                    • e² = 0.006768657997291184<br>
+                    • A0 = 0.9949213504180211<br>
+                    • A1 = 0.00505713745921527<br>
+                    • A2 = 0.0042314080152819475<br>
+                    • A4 = 0.000022278162415514972<br>
+                    • A6 = 1.2720187290518056E-7<br>
+                    • A8 = 7.784677532740341E-10<br>
+                </div>
+                <br>
+            </div>
+        </div>  
     
 </div>

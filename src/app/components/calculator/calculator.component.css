@@ -1,3 +1,11 @@
+.inputs{
+  padding: 1%;
+}
+
+.contenedor{
+  padding: 1%;
+}
+
 .example-form {
   min-width: 150px;
   max-width: 500px;
@@ -28,4 +36,23 @@
 
 .NAD{
   width: 50%;
+}
+
+.row{
+  justify-content: center;
+}
+
+.col{
+  justify-content: space-between;
+}
+
+button{
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  margin-top: 10px;
+  height: 3rem;
+  width: 50%;
+  border-radius: 7px;
+  background-color: #ff7a04;
 }

@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -149,10 +148,10 @@ export class CalculatorComponent implements OnInit {
   Longitud:string;
   Meridiano:string;
   MeridianoFinal:string;
-  Norte:number;
-  Este:number;
-  Zona:number;
-  ZonaFinal:number;
+  Norte:any;
+  Este:any;
+  Zona:any;
+  ZonaFinal:any;
 
   // VARIABLES AUXILIARES
   Latitud_Aux:string;
@@ -855,6 +854,7 @@ export class CalculatorComponent implements OnInit {
   CompareGeo(){
     this.DatumControl = "ITRF92";
     this.DatumControl = "NAD27";
+    this.resultados += `En desarrollo...\n`;
   }
 
   CompareUTM(Norte:number,Este:number,Zona:number){
@@ -894,10 +894,25 @@ export class CalculatorComponent implements OnInit {
     this.A2 = (this.ee*5/8)*(1-(this.ee*139/144)*(1-(this.ee*1087/1112)*(1-(this.ee*513427/521760))));
     this.A4 = (Math.pow(this.ee, 2)*35/72)*(1-(this.ee*125/64)*(1-(this.ee*221069/150000)));
     this.A6 = (Math.pow(this.ee, 3)*105/256)*(1-(this.ee*1179/400));
-    this.A8 = (Math.pow(this.ee, 4)*231/640);  
+    this.A8 = (Math.pow(this.ee, 4)*231/640);
+    
+    console.log(`==============${this.DatumControl}==============`);
+    console.log(`a: ${this.a}`);
+    console.log(`b: ${this.b}`);
+    console.log(`1/f: ${1/this.f}`);
+    console.log(`e'2: ${this.ee}`);
+    console.log(`ee: ${this.e}`);
+    console.log(`A0: ${this.A0}`);
+    console.log(`A1: ${this.A1}`);
+    console.log(`A2: ${this.A2}`);
+    console.log(`A4: ${this.A4}`);
+    console.log(`A6: ${this.A6}`);
+    console.log(`A8: ${this.A8}`);
+
   }
 
   ngOnInit(): void {
+    console.log(this.Norte)
     this.onSelected("Geo2UTM");
     this.selected = "Geo2UTM";
     this.onDatum("ITRF92");
@@ -953,11 +968,19 @@ export class CalculatorComponent implements OnInit {
   // this.Este;
   // this.Zona;
   // this.ZonaFinal;
+  }
 
-
-
-
-
+  limpiar(){
+    this.Latitud = "";
+    this.Longitud = "";
+    this.Meridiano = "";
+    this.MeridianoFinal = "";
+    this.Norte = "";
+    this.Este = "";
+    this.Zona = "";;
+    this.ZonaFinal = "";
+    this.resultados = "";
+    this.procedimiento = "";
   }
 
 
