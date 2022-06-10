@@ -56,3 +56,12 @@ button{
   border-radius: 7px;
   background-color: #ff7a04;
 }
+
+.calcBox{
+  margin-top: 10px;
+  min-height: 40vh;
+}
+
+.calcOp{
+  margin-top: 10px;
+}

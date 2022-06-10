@@ -10,7 +10,7 @@
     </div>
     <div *ngIf="notDatum == false" class="col">
         <mat-form-field>
-            <mat-select [(ngModel)]="selectedItem" placeholder="Datum" [(value)]="selected" (selectionChange)="onDatum(selectedItem);">
+            <mat-select [(ngModel)]="DatumControl" placeholder="Datum" [(value)]="selected">
                 <mat-option *ngFor="let datum of datumInterface" [value]="datum.value">
                 {{ datum.viewValue }}
                 </mat-option>
@@ -68,16 +68,40 @@
             <button *ngIf="UI9" mat-raised-button (click)="CompareGeo()">Calcular</button>
             <button *ngIf="UI10" mat-raised-button (click)="CompareUTM(Norte,Este,Zona)">Calcular</button>
             <button *ngIf="UI11" mat-raised-button (click)="CompareTME(Norte,Este,Meridiano)">Calcular</button>
-            <button mat-raised-button (click)="limpiar()">Limpiar</button>
+            <button mat-raised-button (click)="clearArray()">Limpiar</button>
         </div>
     </div>
 
-        <div class="md-form" style="margin-top: 10px;">
+    <div class="calcBox" >
+        <mat-accordion class="calcOp" *ngFor="let operacion of array_calculos">
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                (closed)="panelOpenState = false"
+                                (click)="setProcedure(operacion);">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{operacion.TipoCadena}} <br>
+                    {{operacion.Entradas}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    <strong>Resultados: </strong>
+                    {{operacion.Resultados}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+                <div class="md-form" style="margin-top: 10px;">
+                    <textarea [(ngModel)]="operacion.Procedimiento" type="text" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
+                </div>
+                <!-- <p>{{operacion.Procedimiento}}</p> -->
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>  
+
+
+        <!-- <div class="md-form" style="margin-top: 10px;">
             <textarea [(ngModel)]="resultados" type="text" name="resultados" id="resultados" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
         </div>
         <div class="md-form" style="margin-top: 10px;">
             <textarea [(ngModel)]="procedimiento" type="text" name="procedimiento" id="procedimiento" cols="30" rows="10" class="md-textarea md-textarea-auto form-control" mdbInput readonly></textarea>
-        </div>
+        </div> -->
 
         <div class="footer">
             <div class="info">
